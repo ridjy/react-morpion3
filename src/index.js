@@ -2,22 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 
-class Square extends React.Component {
-  /**init etat local avec un constructeur */
-  constructor(props) {
-    super(props);//obligatoire
-    this.state = {
-      value: null,
-    };
-  }
-
-  render() {
-    return (
-      <button className="square" onClick={() => this.setState({value: 'X'})}>
-        {this.state.value}
-      </button>
-    );
-  }
+//fonction composant ; n'a pas son propre etat
+function Square(props) {
+  return (
+    <button className="square" onClick={props.onClick}>
+      {props.value}
+    </button>
+  );
 }
 
 class Board extends React.Component {
@@ -26,6 +17,7 @@ class Board extends React.Component {
     super(props);
     this.state = {
       squares: Array(9).fill(null),
+      xIsNext: true,
     };
   }
   renderSquare(i) {
@@ -33,8 +25,16 @@ class Board extends React.Component {
     onClick={() => this.handleClick(i)}/>;
   }
 
+  handleClick(i) {
+    const squares = this.state.squares.slice();//contient une copie du tableau car slice sans parametre
+    squares[i] = this.state.xIsNext ? 'X' : 'O';
+    this.setState({squares: squares,
+      xIsNext: !this.state.xIsNext
+    });
+  }
+
   render() {
-    const status = 'Next player: X';
+    const status = 'Prochain joueur : ' + (this.state.xIsNext ? 'X' : 'O');
 
     return (
       <div>
