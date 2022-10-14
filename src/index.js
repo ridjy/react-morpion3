@@ -3,18 +3,34 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 
 class Square extends React.Component {
+  /**init etat local avec un constructeur */
+  constructor(props) {
+    super(props);//obligatoire
+    this.state = {
+      value: null,
+    };
+  }
+
   render() {
     return (
-      <button className="square">
-        {this.props.value}
+      <button className="square" onClick={() => this.setState({value: 'X'})}>
+        {this.state.value}
       </button>
     );
   }
 }
 
 class Board extends React.Component {
+  /** init state pour le composant parent avec un tableau contenant 9 null */
+  constructor(props) {
+    super(props);
+    this.state = {
+      squares: Array(9).fill(null),
+    };
+  }
   renderSquare(i) {
-    return <Square value={i} />;
+    return <Square value={this.state.squares[i]} 
+    onClick={() => this.handleClick(i)}/>;
   }
 
   render() {
